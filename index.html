@@ -1,0 +1,3474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumen Atelier | Spatial Digital Launches</title>
+    <meta
+      name="description"
+      content="A polished, interactive website concept for Lumen Atelier, a studio creating spatial digital launch experiences."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/lumen-logo.svg" />
+    <link rel="apple-touch-icon" href="assets/lumen-logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f9fafb;
+        --muted: #a7b0ba;
+        --faint: #737f8d;
+        --black: #050607;
+        --charcoal: #111316;
+        --panel: rgba(17, 19, 22, 0.72);
+        --panel-strong: rgba(249, 250, 251, 0.1);
+        --line: rgba(249, 250, 251, 0.15);
+        --line-strong: rgba(249, 250, 251, 0.28);
+        --paper: #f3efe6;
+        --mint: #81e7d4;
+        --coral: #ff7f6e;
+        --amber: #f4c95d;
+        --blue: #79a7ff;
+        --radius: 8px;
+        --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 92px;
+      }
+
+      body {
+        --cursor-x: 50vw;
+        --cursor-y: 45vh;
+        margin: 0;
+        background: var(--black);
+        color: var(--ink);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        left: var(--cursor-x);
+        top: var(--cursor-y);
+        z-index: 1;
+        width: 34vmax;
+        height: 34vmax;
+        pointer-events: none;
+        opacity: 0.24;
+        background:
+          radial-gradient(circle at 36% 36%, rgba(129, 231, 212, 0.2), transparent 31%),
+          radial-gradient(circle at 64% 58%, rgba(244, 201, 93, 0.14), transparent 28%),
+          radial-gradient(circle at 48% 72%, rgba(255, 127, 110, 0.16), transparent 30%);
+        filter: blur(18px);
+        transform: translate3d(-50%, -50%, 0);
+        transition: opacity 260ms var(--ease);
+        mix-blend-mode: screen;
+      }
+
+      body.is-traveling::before {
+        opacity: 0.58;
+      }
+
+      body::selection {
+        background: var(--mint);
+        color: #06100d;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .site-shell {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .magic-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 8;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .spark {
+        position: absolute;
+        width: var(--spark-size, 6px);
+        height: var(--spark-size, 6px);
+        border-radius: 999px;
+        background: var(--spark-color, var(--mint));
+        box-shadow: 0 0 18px var(--spark-color, var(--mint));
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.4);
+        animation: spark-rise 900ms var(--ease) forwards;
+      }
+
+      .trail-spark {
+        position: fixed;
+        left: var(--trail-x, 50vw);
+        top: var(--trail-y, 50vh);
+        z-index: 9;
+        width: var(--trail-size, 5px);
+        height: var(--trail-size, 5px);
+        pointer-events: none;
+        border-radius: 999px;
+        background: var(--trail-color, var(--mint));
+        box-shadow: 0 0 12px var(--trail-color, var(--mint));
+        animation: trail-fade 520ms var(--ease) forwards;
+      }
+
+      @keyframes trail-fade {
+        0% {
+          opacity: 0.8;
+          transform: translate3d(-50%, -50%, 0) scale(0.7);
+        }
+
+        100% {
+          opacity: 0;
+          transform: translate3d(-50%, -96px, 0) scale(1.4);
+        }
+      }
+
+      @keyframes spark-rise {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0.35);
+        }
+
+        18% {
+          opacity: 0.92;
+        }
+
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--spark-x, 26px), var(--spark-y, -72px), 0) scale(1);
+        }
+      }
+
+      .hero {
+        position: relative;
+        min-height: 76vh;
+        padding-top: 92px;
+        isolation: isolate;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .route-transition {
+        position: fixed;
+        inset: 0;
+        z-index: 7;
+        pointer-events: none;
+        opacity: 0;
+        background:
+          linear-gradient(90deg, rgba(5, 6, 7, 0.88), rgba(5, 6, 7, 0.18), rgba(5, 6, 7, 0.88)),
+          radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(129, 231, 212, 0.34), transparent 28%),
+          radial-gradient(circle at 68% 24%, rgba(244, 201, 93, 0.18), transparent 26%);
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+
+      .route-transition.is-active {
+        animation: route-sweep 760ms var(--ease) forwards;
+      }
+
+      @keyframes route-sweep {
+        0% {
+          opacity: 0;
+          transform: scaleX(0);
+          transform-origin: left;
+        }
+
+        18% {
+          opacity: 0.82;
+        }
+
+        50% {
+          opacity: 0.46;
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+
+        51% {
+          transform-origin: right;
+        }
+
+        100% {
+          opacity: 0;
+          transform: scaleX(0);
+          transform-origin: right;
+        }
+      }
+
+      .route-progress {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 11;
+        width: 100%;
+        height: 2px;
+        pointer-events: none;
+        background: linear-gradient(90deg, var(--mint), var(--amber), var(--coral), var(--blue));
+        box-shadow: 0 0 18px rgba(129, 231, 212, 0.55);
+        transform: scaleX(0);
+        transform-origin: left;
+        opacity: 0;
+      }
+
+      .route-progress.is-active {
+        opacity: 1;
+      }
+
+      #hero-scene {
+        position: absolute;
+        inset: 0;
+        z-index: -3;
+        width: 100%;
+        height: 100%;
+        background: #050607;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background:
+          linear-gradient(90deg, rgba(5, 6, 7, 0.92), rgba(5, 6, 7, 0.44) 48%, rgba(5, 6, 7, 0.88)),
+          linear-gradient(180deg, rgba(5, 6, 7, 0.38), rgba(5, 6, 7, 0.16) 44%, rgba(5, 6, 7, 0.96));
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.36;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, transparent, black 12%, black 72%, transparent);
+      }
+
+      .nav {
+        position: fixed;
+        left: 50%;
+        top: 16px;
+        z-index: 12;
+        width: min(1180px, calc(100% - 40px));
+        min-height: 62px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid rgba(249, 250, 251, 0.12);
+        background: rgba(5, 6, 7, 0.38);
+        backdrop-filter: blur(18px);
+        border-radius: var(--radius);
+        box-shadow: 0 18px 70px rgba(0, 0, 0, 0);
+        transform: translateX(-50%);
+        will-change: top, min-height, background;
+        transition:
+          min-height 220ms var(--ease),
+          background 220ms var(--ease),
+          border-color 220ms var(--ease),
+          box-shadow 220ms var(--ease),
+          top 220ms var(--ease);
+      }
+
+      body.has-scrolled .nav {
+        top: 12px;
+        min-height: 58px;
+        border-color: rgba(249, 250, 251, 0.22);
+        background: rgba(5, 6, 7, 0.78);
+        box-shadow: 0 18px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        padding-right: 10px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(18px);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px;
+        border: 1px solid var(--line);
+        background: rgba(8, 10, 12, 0.42);
+        backdrop-filter: blur(18px);
+        border-radius: var(--radius);
+      }
+
+      .nav-links a {
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 14px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: color 180ms var(--ease), background 180ms var(--ease);
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible,
+      .nav-links a.is-active {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.08);
+        outline: none;
+      }
+
+      .nav-links a.is-active {
+        background:
+          linear-gradient(135deg, rgba(129, 231, 212, 0.16), rgba(244, 201, 93, 0.08)),
+          rgba(255, 255, 255, 0.08);
+      }
+
+      .nav-action {
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.08);
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: transform 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
+      }
+
+      .nav-action:hover,
+      .nav-action:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.14);
+        outline: none;
+      }
+
+      .nav-menu-toggle {
+        display: none;
+      }
+
+      .mobile-menu {
+        position: fixed;
+        left: 50%;
+        top: 76px;
+        z-index: 11;
+        width: min(360px, calc(100% - 28px));
+        display: none;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid rgba(249, 250, 251, 0.18);
+        background: rgba(5, 6, 7, 0.86);
+        backdrop-filter: blur(18px);
+        border-radius: var(--radius);
+        box-shadow: 0 18px 80px rgba(0, 0, 0, 0.34);
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -8px);
+        transition: opacity 180ms var(--ease), transform 180ms var(--ease);
+      }
+
+      .mobile-menu.is-open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, 0);
+      }
+
+      .mobile-menu a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        color: var(--muted);
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .mobile-menu a:hover,
+      .mobile-menu a:focus-visible {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line);
+        outline: none;
+      }
+
+      .hero-content {
+        width: min(1180px, calc(100% - 40px));
+        margin: auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.72fr);
+        gap: 56px;
+        align-items: end;
+        padding: 48px 0 48px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--paper);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 38px;
+        height: 1px;
+        background: var(--amber);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 790px;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 88px;
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 660px;
+        margin-top: 26px;
+        color: #d6dce2;
+        font-size: 19px;
+        line-height: 1.7;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .btn {
+        position: relative;
+        overflow: hidden;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 18px;
+        border: 1px solid transparent;
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 800;
+        transition: transform 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease), color 180ms var(--ease);
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: -35%;
+        left: -70%;
+        width: 42%;
+        height: 170%;
+        opacity: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.46), transparent);
+        transform: skewX(-18deg);
+        transition: left 560ms var(--ease), opacity 180ms var(--ease);
+      }
+
+      .btn:hover::before,
+      .btn:focus-visible::before,
+      .btn.is-casting::before {
+        left: 122%;
+        opacity: 1;
+      }
+
+      .btn i,
+      .nav-action i,
+      .icon-button i {
+        width: 18px;
+        height: 18px;
+      }
+
+      .btn-primary {
+        background: var(--paper);
+        color: #0d0f11;
+      }
+
+      .btn-primary:hover,
+      .btn-primary:focus-visible {
+        transform: translateY(-2px);
+        background: #ffffff;
+        outline: none;
+      }
+
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line);
+        color: var(--ink);
+        backdrop-filter: blur(18px);
+      }
+
+      .btn-ghost:hover,
+      .btn-ghost:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.14);
+        outline: none;
+      }
+
+      .hero-proof {
+        align-self: stretch;
+        min-height: 360px;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 14px;
+      }
+
+      .glass-panel {
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.045)),
+          rgba(9, 12, 14, 0.62);
+        backdrop-filter: blur(24px);
+        border-radius: var(--radius);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      }
+
+      .demo-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 18px;
+      }
+
+      .demo-panel.is-reframing {
+        animation: panel-pulse 620ms var(--ease);
+      }
+
+      @keyframes panel-pulse {
+        0%,
+        100% {
+          filter: saturate(1);
+        }
+
+        45% {
+          filter: saturate(1.45) brightness(1.16);
+        }
+      }
+
+      .demo-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.48;
+        background:
+          radial-gradient(circle at 70% 28%, rgba(129, 231, 212, 0.24), transparent 24%),
+          linear-gradient(120deg, transparent 0 24%, rgba(129, 231, 212, 0.16) 32%, transparent 42%),
+          linear-gradient(180deg, rgba(121, 167, 255, 0.1), transparent 52%, rgba(255, 127, 110, 0.12));
+        transform: translateX(-22%);
+        animation: scan 8s var(--ease) infinite;
+      }
+
+      @keyframes scan {
+        0%,
+        16% {
+          transform: translateX(-42%);
+        }
+
+        72%,
+        100% {
+          transform: translateX(42%);
+        }
+      }
+
+      .demo-top {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      .demo-dots {
+        display: flex;
+        gap: 7px;
+      }
+
+      .demo-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--faint);
+      }
+
+      .demo-dots span:nth-child(1) {
+        background: var(--coral);
+      }
+
+      .demo-dots span:nth-child(2) {
+        background: var(--amber);
+      }
+
+      .demo-dots span:nth-child(3) {
+        background: var(--mint);
+      }
+
+      .demo-top strong {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--paper);
+      }
+
+      .showcase {
+        position: relative;
+        min-height: 300px;
+        display: grid;
+        grid-template-columns: 0.78fr 1.22fr;
+        gap: 12px;
+      }
+
+      .showcase-tile {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .showcase-left {
+        display: grid;
+        gap: 12px;
+      }
+
+      .material-sample {
+        position: relative;
+        padding: 14px;
+        min-height: 134px;
+        display: grid;
+        align-content: end;
+        gap: 10px;
+      }
+
+      .material-sample::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(135deg, rgba(129, 231, 212, 0.28), transparent 40%),
+          repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 18px),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 127, 110, 0.12));
+      }
+
+      .material-sample::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--mint), transparent);
+        opacity: 0.6;
+      }
+
+      .material-sample span,
+      .material-sample strong,
+      .material-swatches {
+        position: relative;
+      }
+
+      .material-swatches {
+        display: flex;
+        gap: 7px;
+      }
+
+      .material-swatches i {
+        width: 26px;
+        height: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 999px;
+        background: var(--swatch, var(--paper));
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+      }
+
+      .material-sample span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .material-sample strong {
+        margin-top: 4px;
+        font-size: 15px;
+      }
+
+      .micro-list {
+        min-height: 154px;
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .micro-item {
+        display: grid;
+        grid-template-columns: 9px 1fr auto;
+        gap: 10px;
+        align-items: center;
+        color: #dbe2e9;
+        font-size: 12px;
+      }
+
+      .micro-item::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        background: var(--mint);
+        border-radius: 2px;
+      }
+
+      .micro-item:nth-child(2)::before {
+        background: var(--amber);
+      }
+
+      .micro-item:nth-child(3)::before {
+        background: var(--coral);
+      }
+
+      .micro-item small {
+        color: var(--faint);
+      }
+
+      .launch-tempo {
+        position: relative;
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .launch-tempo::before {
+        content: "";
+        display: block;
+        width: 74%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--mint), var(--amber), var(--coral));
+        animation: tempo-slide 3.8s var(--ease) infinite;
+      }
+
+      @keyframes tempo-slide {
+        0%,
+        100% {
+          transform: translateX(-7%);
+        }
+
+        50% {
+          transform: translateX(22%);
+        }
+      }
+
+      .showcase-main {
+        position: relative;
+        min-height: 300px;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(129, 231, 212, 0.24), transparent 22%),
+          linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04)),
+          #0e1114;
+      }
+
+      .showcase-main::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background:
+          linear-gradient(180deg, rgba(5, 6, 7, 0.04), rgba(5, 6, 7, 0.72)),
+          radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(129, 231, 212, 0.18), transparent 18%),
+          linear-gradient(90deg, rgba(5, 6, 7, 0.34), transparent 48%);
+      }
+
+      .showcase-main::after {
+        content: "";
+        position: absolute;
+        left: -30%;
+        top: 0;
+        z-index: 4;
+        width: 34%;
+        height: 100%;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent, rgba(249, 250, 251, 0.18), transparent);
+        transform: skewX(-16deg);
+        animation: launch-sweep 4.4s var(--ease) infinite;
+      }
+
+      @keyframes launch-sweep {
+        0%,
+        22% {
+          left: -36%;
+        }
+
+        70%,
+        100% {
+          left: 104%;
+        }
+      }
+
+      .launch-scene-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.82;
+        filter: saturate(1.06) contrast(1.04);
+        transform: scale(1.02);
+      }
+
+      .launch-stage-grid {
+        position: absolute;
+        left: 9%;
+        right: 9%;
+        bottom: 14%;
+        z-index: 3;
+        height: 34%;
+        opacity: 0.56;
+        background-image:
+          linear-gradient(rgba(243, 239, 230, 0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(243, 239, 230, 0.16) 1px, transparent 1px);
+        background-size: 24px 24px;
+        transform: perspective(480px) rotateX(62deg);
+        transform-origin: center bottom;
+        mask-image: linear-gradient(to bottom, transparent, black 28%, transparent 94%);
+      }
+
+      .launch-orbit {
+        position: absolute;
+        left: 50%;
+        top: 42%;
+        z-index: 5;
+        width: 106px;
+        height: 106px;
+        border: 1px solid rgba(129, 231, 212, 0.38);
+        border-radius: 999px;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 0 0 16px rgba(129, 231, 212, 0.05),
+          0 0 32px rgba(129, 231, 212, 0.22);
+      }
+
+      .launch-orbit::before,
+      .launch-orbit::after {
+        content: "";
+        position: absolute;
+        border-radius: inherit;
+      }
+
+      .launch-orbit::before {
+        inset: 20px;
+        border: 1px solid rgba(243, 239, 230, 0.34);
+      }
+
+      .launch-orbit::after {
+        left: 50%;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        background: var(--paper);
+        box-shadow: 0 0 22px var(--mint);
+        transform: translate(-50%, -50%);
+      }
+
+      .orbit-point {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        margin: -4px;
+        border-radius: 999px;
+        background: var(--mint);
+        box-shadow: 0 0 18px var(--mint);
+        animation: orbit-point 4.8s linear infinite;
+      }
+
+      @keyframes orbit-point {
+        from {
+          transform: rotate(0deg) translateX(53px) rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg) translateX(53px) rotate(-360deg);
+        }
+      }
+
+      .launch-chip {
+        position: absolute;
+        z-index: 6;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(5, 6, 7, 0.58);
+        color: var(--paper);
+        backdrop-filter: blur(16px);
+        border-radius: 7px;
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+      }
+
+      .launch-chip::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--mint);
+        box-shadow: 0 0 15px var(--mint);
+      }
+
+      .launch-chip.one {
+        left: 14px;
+        top: 16px;
+      }
+
+      .launch-chip.two {
+        right: 14px;
+        bottom: 16px;
+      }
+
+      .launch-chip.three {
+        left: 16px;
+        top: 56px;
+      }
+
+      .launch-status {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        z-index: 6;
+        width: 64px;
+        display: grid;
+        gap: 5px;
+      }
+
+      .launch-status span {
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.18);
+        overflow: hidden;
+      }
+
+      .launch-status span::before {
+        content: "";
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--mint), var(--amber));
+        transform: translateX(-36%);
+        animation: status-fill 2.8s var(--ease) infinite;
+      }
+
+      .launch-status span:nth-child(2)::before {
+        animation-delay: 220ms;
+      }
+
+      .launch-status span:nth-child(3)::before {
+        animation-delay: 420ms;
+      }
+
+      @keyframes status-fill {
+        0%,
+        100% {
+          transform: translateX(-44%);
+        }
+
+        52% {
+          transform: translateX(12%);
+        }
+      }
+
+      .render-label {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+        z-index: 7;
+        display: grid;
+        gap: 5px;
+      }
+
+      .render-label span {
+        width: max-content;
+        padding: 6px 9px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(5, 6, 7, 0.42);
+        color: var(--paper);
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-radius: 6px;
+      }
+
+      .metrics-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        overflow: hidden;
+      }
+
+      .metric {
+        min-height: 86px;
+        display: grid;
+        align-content: center;
+        gap: 5px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .metric strong {
+        font-size: 24px;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .section {
+        position: relative;
+        padding: 72px 0;
+      }
+
+      .section.is-arriving {
+        animation: section-arrive 520ms var(--ease);
+      }
+
+      @keyframes section-arrive {
+        0% {
+          opacity: 0.82;
+          transform: translateY(18px);
+        }
+
+        65% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section.alt {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 34%),
+          #090b0d;
+      }
+
+      .wrap {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(260px, 0.54fr);
+        gap: 42px;
+        align-items: end;
+        margin-bottom: 36px;
+      }
+
+      .kicker {
+        color: var(--mint);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin-top: 12px;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 54px;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .section-head p {
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .service {
+        min-height: 330px;
+        padding: 24px;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.045);
+        transition: transform 220ms var(--ease), border-color 220ms var(--ease), background 220ms var(--ease);
+      }
+
+      .service:hover {
+        transform: translateY(-5px);
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .service-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        color: #0b1210;
+        background: var(--mint);
+        border-radius: var(--radius);
+      }
+
+      .service:nth-child(2) .service-icon {
+        background: var(--amber);
+      }
+
+      .service:nth-child(3) .service-icon {
+        background: var(--coral);
+      }
+
+      .service h3 {
+        max-width: 260px;
+        font-size: 24px;
+        line-height: 1.14;
+      }
+
+      .service p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .service-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--paper);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .work-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 14px;
+      }
+
+      .project {
+        min-height: 430px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .project.large {
+        min-height: 580px;
+      }
+
+      .project-visual {
+        position: relative;
+        min-height: 330px;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .project-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(180deg, rgba(5, 6, 7, 0.02), rgba(5, 6, 7, 0.58)),
+          linear-gradient(90deg, rgba(5, 6, 7, 0.2), transparent 42%);
+      }
+
+      .large .project-visual {
+        min-height: 440px;
+      }
+
+      .project-visual img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        will-change: transform;
+        transition: transform 700ms var(--ease), filter 700ms var(--ease);
+      }
+
+      .project:hover .project-visual img {
+        transform: scale(1.035);
+        filter: saturate(1.14) brightness(1.06);
+      }
+
+      .tempo-badge {
+        position: absolute;
+        left: 18px;
+        top: 18px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 34px;
+        padding: 0 11px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(5, 6, 7, 0.58);
+        color: var(--paper);
+        backdrop-filter: blur(18px);
+        border-radius: var(--radius);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .tempo-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--mint);
+        border-radius: 999px;
+        box-shadow: 0 0 16px var(--mint);
+      }
+
+      .visual-1 {
+        background:
+          linear-gradient(135deg, rgba(129, 231, 212, 0.26), transparent 38%),
+          linear-gradient(215deg, rgba(244, 201, 93, 0.28), transparent 42%),
+          #0b0f12;
+      }
+
+      .visual-2 {
+        background:
+          linear-gradient(135deg, rgba(121, 167, 255, 0.26), transparent 36%),
+          linear-gradient(215deg, rgba(255, 127, 110, 0.23), transparent 44%),
+          #11100d;
+      }
+
+      .visual-3 {
+        background:
+          linear-gradient(135deg, rgba(244, 201, 93, 0.23), transparent 38%),
+          linear-gradient(215deg, rgba(129, 231, 212, 0.18), transparent 48%),
+          #0d0f10;
+      }
+
+      .stage-lines {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 58px 58px;
+        transform: perspective(600px) rotateX(58deg) translateY(82px) scale(1.25);
+        transform-origin: center bottom;
+        animation: grid-drift 10s linear infinite;
+      }
+
+      @keyframes grid-drift {
+        0% {
+          background-position: 0 0, 0 0;
+        }
+
+        100% {
+          background-position: 0 58px, 58px 0;
+        }
+      }
+
+      .stage-object {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 36px 80px rgba(0, 0, 0, 0.35);
+        animation: object-float 7s var(--ease) infinite;
+      }
+
+      @keyframes object-float {
+        0%,
+        100% {
+          translate: 0 0;
+        }
+
+        50% {
+          translate: 0 -10px;
+        }
+      }
+
+      .visual-1 .stage-object:nth-child(2) {
+        width: 42%;
+        height: 48%;
+        left: 12%;
+        bottom: 14%;
+        transform: rotate(-6deg);
+      }
+
+      .visual-1 .stage-object:nth-child(3) {
+        width: 34%;
+        height: 62%;
+        right: 12%;
+        bottom: 10%;
+        transform: rotate(5deg);
+      }
+
+      .visual-2 .stage-object:nth-child(2) {
+        width: 62%;
+        height: 36%;
+        left: 18%;
+        top: 20%;
+        transform: rotate(4deg);
+      }
+
+      .visual-2 .stage-object:nth-child(3) {
+        width: 36%;
+        height: 34%;
+        left: 12%;
+        bottom: 16%;
+        transform: rotate(-7deg);
+      }
+
+      .visual-3 .stage-object:nth-child(2) {
+        width: 34%;
+        height: 58%;
+        left: 16%;
+        bottom: 12%;
+        transform: rotate(5deg);
+      }
+
+      .visual-3 .stage-object:nth-child(3) {
+        width: 40%;
+        height: 38%;
+        right: 14%;
+        bottom: 18%;
+        transform: rotate(-5deg);
+      }
+
+      .project-body {
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .project-body span {
+        color: var(--mint);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .project-body h3 {
+        margin-top: 8px;
+        font-size: 26px;
+      }
+
+      .project-body p {
+        margin-top: 10px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .project-facts {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      .project-fact {
+        min-height: 72px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius);
+      }
+
+      .project-fact strong {
+        display: block;
+        color: var(--paper);
+        font-size: 15px;
+      }
+
+      .project-fact span {
+        display: block;
+        margin-top: 4px;
+        color: var(--faint);
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      .project-links {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .case-link {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--paper);
+        border-radius: var(--radius);
+        font-size: 13px;
+        font-weight: 800;
+        transition: transform 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
+      }
+
+      .case-link:hover,
+      .case-link:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.09);
+        outline: none;
+      }
+
+      .project.is-selected {
+        border-color: rgba(129, 231, 212, 0.6);
+        box-shadow: 0 0 0 1px rgba(129, 231, 212, 0.16), 0 24px 90px rgba(129, 231, 212, 0.08);
+      }
+
+      .icon-button {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: transform 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
+      }
+
+      .icon-button:hover,
+      .icon-button:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+      }
+
+      .project-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: 0.78fr 1.22fr;
+        gap: 38px;
+        align-items: start;
+      }
+
+      .process-aside {
+        position: sticky;
+        top: 24px;
+        padding: 26px;
+      }
+
+      .process-aside h2 {
+        font-size: 45px;
+      }
+
+      .process-aside p {
+        margin-top: 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        gap: 20px;
+        min-height: 150px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .step::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--mint), var(--amber), var(--coral));
+        opacity: 0.84;
+      }
+
+      .step-index {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        color: #10110c;
+        background: var(--paper);
+        font-weight: 900;
+        border-radius: var(--radius);
+      }
+
+      .step h3 {
+        font-size: 22px;
+      }
+
+      .step p {
+        margin-top: 10px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .brief {
+        display: grid;
+        grid-template-columns: minmax(0, 0.88fr) minmax(340px, 0.72fr);
+        gap: 34px;
+        align-items: stretch;
+      }
+
+      .brief-copy {
+        min-height: 520px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .brief-copy h2 {
+        font-size: 60px;
+      }
+
+      .brief-copy p {
+        max-width: 560px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      .brief-signature {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .signature-item {
+        min-height: 104px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+        border-radius: var(--radius);
+      }
+
+      .signature-item strong {
+        display: block;
+        font-size: 24px;
+      }
+
+      .signature-item span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .brief-form {
+        padding: 24px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .field label {
+        color: var(--paper);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.075);
+        padding: 0 14px;
+        outline: none;
+        transition: border-color 180ms var(--ease), background 180ms var(--ease);
+      }
+
+      .field textarea {
+        min-height: 124px;
+        padding: 14px;
+        resize: vertical;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--mint);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .field select option {
+        background: #111316;
+        color: var(--ink);
+      }
+
+      .summary {
+        min-height: 86px;
+        margin: 18px 0;
+        padding: 14px;
+        color: #dbe2e9;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.22);
+        border-radius: var(--radius);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .contact-strip {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .contact-card {
+        min-height: 76px;
+        display: grid;
+        align-content: center;
+        gap: 5px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+        border-radius: var(--radius);
+      }
+
+      .contact-card span {
+        color: var(--faint);
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .contact-card a,
+      .contact-card strong {
+        color: var(--paper);
+        font-size: 14px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+
+      .form-status {
+        min-height: 20px;
+        margin-top: 12px;
+        color: var(--mint);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .notes-panel {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: minmax(0, 0.88fr) minmax(320px, 0.72fr);
+        gap: 34px;
+        align-items: stretch;
+        min-height: 460px;
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+          rgba(9, 12, 14, 0.76);
+        border-radius: var(--radius);
+        box-shadow: 0 24px 90px rgba(0, 0, 0, 0.3);
+      }
+
+      .notes-copy {
+        padding: 42px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      .notes-copy h2 {
+        max-width: 620px;
+      }
+
+      .notes-copy p {
+        max-width: 560px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      .subscribe-form {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) auto;
+        gap: 10px;
+        max-width: 560px;
+      }
+
+      .subscribe-form input {
+        min-height: 52px;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.075);
+        padding: 0 15px;
+        outline: none;
+      }
+
+      .subscribe-form input:focus {
+        border-color: var(--mint);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .subscribe-note {
+        min-height: 20px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .notes-visual {
+        position: relative;
+        min-height: 420px;
+        border-left: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 35% 24%, rgba(129, 231, 212, 0.22), transparent 28%),
+          radial-gradient(circle at 72% 70%, rgba(255, 127, 110, 0.2), transparent 30%),
+          linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      }
+
+      .notes-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.2;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+        background-size: 56px 56px;
+      }
+
+      .dispatch-card {
+        position: absolute;
+        width: min(78%, 360px);
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(5, 6, 7, 0.58);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius);
+        box-shadow: 0 18px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      .dispatch-card.one {
+        left: 34px;
+        top: 44px;
+      }
+
+      .dispatch-card.two {
+        right: 30px;
+        bottom: 52px;
+      }
+
+      .dispatch-card span {
+        color: var(--mint);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .dispatch-card h3 {
+        margin-top: 10px;
+        font-size: 26px;
+        line-height: 1.08;
+      }
+
+      .dispatch-card p {
+        margin-top: 12px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .dispatch-meter {
+        position: absolute;
+        left: 42px;
+        right: 42px;
+        bottom: 28px;
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.09);
+      }
+
+      .dispatch-meter::before {
+        content: "";
+        display: block;
+        width: 76%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--mint), var(--amber), var(--coral));
+        border-radius: inherit;
+        animation: meter-breathe 3.4s var(--ease) infinite;
+      }
+
+      @keyframes meter-breathe {
+        0%,
+        100% {
+          transform: translateX(-8%);
+        }
+
+        50% {
+          transform: translateX(18%);
+        }
+      }
+
+      .footer {
+        padding: 30px 0;
+        border-top: 1px solid var(--line);
+        background: #050607;
+      }
+
+      .footer .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--faint);
+        font-size: 13px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 16px;
+      }
+
+      .toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 10;
+        max-width: 320px;
+        padding: 14px 16px;
+        border: 1px solid var(--line-strong);
+        background: rgba(15, 18, 20, 0.92);
+        color: var(--ink);
+        border-radius: var(--radius);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition: opacity 180ms var(--ease), transform 180ms var(--ease);
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 980px) {
+        .nav {
+          gap: 12px;
+        }
+
+        .nav-links {
+          max-width: 54vw;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        .nav-links::-webkit-scrollbar {
+          display: none;
+        }
+
+        .hero-content,
+        .section-head,
+        .work-grid,
+        .process,
+        .brief,
+        .notes-panel {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 64px;
+        }
+
+        h2,
+        .brief-copy h2 {
+          font-size: 44px;
+        }
+
+        .hero-proof,
+        .brief-copy {
+          min-height: auto;
+        }
+
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .process-aside {
+          position: relative;
+          top: auto;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav,
+        .hero-content,
+        .wrap {
+          width: min(100% - 28px, 1180px);
+        }
+
+        .nav {
+          top: 10px;
+          min-height: 56px;
+          gap: 8px;
+          padding: 6px;
+        }
+
+        body.has-scrolled .nav {
+          top: 8px;
+        }
+
+        .brand {
+          gap: 8px;
+          padding-right: 0;
+        }
+
+        .brand span:last-child {
+          max-width: 116px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .brand-mark {
+          width: 32px;
+          height: 32px;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .nav-menu-toggle {
+          display: grid;
+        }
+
+        .mobile-menu {
+          display: grid;
+        }
+
+        .hero {
+          min-height: 82vh;
+          padding-top: 82px;
+        }
+
+        .hero-content {
+          padding: 32px 0 36px;
+          gap: 30px;
+        }
+
+        h1 {
+          font-size: 45px;
+          line-height: 0.98;
+        }
+
+        .hero-copy {
+          font-size: 16px;
+        }
+
+        .hero-proof {
+          display: none;
+        }
+
+        .cta-row,
+        .form-actions {
+          align-items: stretch;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .showcase {
+          grid-template-columns: 1fr;
+        }
+
+        .showcase-main,
+        .project-visual,
+        .large .project-visual {
+          min-height: 260px;
+        }
+
+        .metrics-strip,
+        .brief-signature,
+        .project-facts,
+        .field-grid,
+        .contact-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          padding: 56px 0;
+        }
+
+        h2,
+        .brief-copy h2,
+        .process-aside h2 {
+          font-size: 36px;
+        }
+
+        .project,
+        .project.large {
+          min-height: auto;
+        }
+
+        .project-body {
+          grid-template-columns: 1fr;
+        }
+
+        .step {
+          grid-template-columns: 1fr;
+        }
+
+        .footer .wrap {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .notes-copy {
+          padding: 26px;
+        }
+
+        .subscribe-form {
+          grid-template-columns: 1fr;
+        }
+
+        .notes-visual {
+          display: grid;
+          gap: 12px;
+          min-height: 360px;
+          padding: 24px;
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+
+        .dispatch-card {
+          position: relative;
+          left: auto;
+          right: auto;
+          top: auto;
+          bottom: auto;
+          width: 100%;
+        }
+
+        .dispatch-card.one {
+          left: auto;
+          top: auto;
+        }
+
+        .dispatch-card.two {
+          right: auto;
+          bottom: auto;
+        }
+
+        .dispatch-meter {
+          position: relative;
+          left: auto;
+          right: auto;
+          bottom: auto;
+          align-self: end;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="assets/motion.css" />
+  </head>
+  <body>
+    <div class="magic-layer" id="magic-layer" aria-hidden="true"></div>
+    <div class="route-transition" id="route-transition" aria-hidden="true"></div>
+    <div class="route-progress" id="route-progress" aria-hidden="true"></div>
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Lumen Atelier home" data-scroll>
+        <span class="brand-mark" aria-hidden="true">
+          <img src="assets/lumen-logo.svg" alt="" />
+        </span>
+        <span>Lumen Atelier</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#top">Home</a>
+        <a href="services.html">Services</a>
+        <a href="work.html">Work</a>
+        <a href="studio.html">Studio</a>
+        <a href="#notes" data-scroll>Notes</a>
+        <a href="#brief" data-scroll>Inquiry</a>
+      </div>
+      <button class="nav-action nav-menu-toggle" type="button" id="nav-menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
+      </button>
+      <a class="nav-action" href="#brief" aria-label="Send a project inquiry" data-scroll>
+        <i data-lucide="send"></i>
+      </a>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+      <a href="index.html#top">Home</a>
+      <a href="services.html">Services</a>
+      <a href="work.html">Work</a>
+      <a href="studio.html">Studio</a>
+      <a href="#notes" data-scroll>Notes</a>
+      <a href="#brief" data-scroll>Inquiry</a>
+    </div>
+    <div class="site-shell">
+      <header class="hero" id="top">
+        <canvas id="hero-scene" aria-hidden="true"></canvas>
+        <div class="hero-content">
+          <div>
+            <div class="eyebrow">Spatial digital launches</div>
+            <h1>Lumen Atelier</h1>
+            <p class="hero-copy">
+              We craft cinematic websites for brands launching objects, spaces, and experiences that deserve more than a flat page.
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#brief" data-scroll>
+                Start a project
+                <i data-lucide="arrow-right"></i>
+              </a>
+              <button class="btn btn-ghost" type="button" id="reframe-scene">
+                Reframe scene
+                <i data-lucide="shuffle"></i>
+              </button>
+              <a class="btn btn-ghost" href="work.html">
+                View case studies
+                <i data-lucide="gallery-vertical-end"></i>
+              </a>
+            </div>
+          </div>
+
+          <aside class="hero-proof" aria-label="Featured launch preview">
+            <div class="glass-panel demo-panel">
+              <div class="demo-top">
+                <div class="demo-dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <strong>Live launch system</strong>
+              </div>
+              <div class="showcase">
+                <div class="showcase-left">
+                  <div class="showcase-tile material-sample">
+                    <div class="material-swatches" aria-hidden="true">
+                      <i style="--swatch: #f3efe6"></i>
+                      <i style="--swatch: #81e7d4"></i>
+                      <i style="--swatch: #2e3537"></i>
+                    </div>
+                    <span>Material mood</span>
+                    <strong>Glass, steel, warm paper</strong>
+                  </div>
+                  <div class="showcase-tile micro-list">
+                    <div class="micro-item">Hero render <small>live</small></div>
+                    <div class="micro-item">Inquiry route <small>armed</small></div>
+                    <div class="micro-item">Launch copy <small>locked</small></div>
+                    <div class="launch-tempo" aria-hidden="true"></div>
+                  </div>
+                </div>
+                <div class="showcase-tile showcase-main">
+                  <img class="launch-scene-img" src="assets/furniture-launch.jpg" width="1672" height="941" alt="" loading="eager" decoding="async" />
+                  <div class="launch-stage-grid" aria-hidden="true"></div>
+                  <div class="launch-orbit" aria-hidden="true"><span class="orbit-point"></span></div>
+                  <div class="launch-status" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <span class="launch-chip one">Hero live</span>
+                  <span class="launch-chip two">Brief ready</span>
+                  <span class="launch-chip three">Scene tuned</span>
+                  <div class="render-label">
+                    <span>Scene 04</span>
+                    <span>Nord pavilion</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="glass-panel metrics-strip">
+              <div class="metric">
+                <strong>21</strong>
+                <span>days from concept to launch</span>
+              </div>
+              <div class="metric">
+                <strong>4.8x</strong>
+                <span>average interaction depth</span>
+              </div>
+              <div class="metric">
+                <strong>AA</strong>
+                <span>contrast and motion review</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </header>
+
+      <main>
+        <section class="section" id="surfaces">
+          <div class="wrap">
+            <div class="section-head">
+              <div>
+                <span class="kicker">Surfaces</span>
+                <h2>Launch pages with depth, discipline, and drama.</h2>
+              </div>
+              <p>
+                Every composition is built around a tangible story: the object, the room, the offer, and the moment your audience decides to lean closer.
+              </p>
+            </div>
+
+            <div class="services-grid">
+              <article class="service">
+                <div class="service-icon" aria-hidden="true"><i data-lucide="box"></i></div>
+                <div>
+                  <h3>Product worlds</h3>
+                  <p>
+                    Immersive hero scenes, material callouts, and product narratives that make hardware, furniture, and luxury goods feel present.
+                  </p>
+                </div>
+                <div class="service-foot">
+                  <span>3D-ready layouts</span>
+                  <i data-lucide="move-up-right" aria-hidden="true"></i>
+                </div>
+              </article>
+
+              <article class="service">
+                <div class="service-icon" aria-hidden="true"><i data-lucide="landmark"></i></div>
+                <div>
+                  <h3>Venue systems</h3>
+                  <p>
+                    Editorial pages for hotels, galleries, studios, and retail spaces with crisp booking paths and atmosphere that still performs.
+                  </p>
+                </div>
+                <div class="service-foot">
+                  <span>Conversion mapped</span>
+                  <i data-lucide="move-up-right" aria-hidden="true"></i>
+                </div>
+              </article>
+
+              <article class="service">
+                <div class="service-icon" aria-hidden="true"><i data-lucide="sparkles"></i></div>
+                <div>
+                  <h3>Campaign rooms</h3>
+                  <p>
+                    Time-boxed digital experiences with launch countdowns, interactive previews, press assets, and a clean handoff to sales.
+                  </p>
+                </div>
+                <div class="service-foot">
+                  <span>Motion controlled</span>
+                  <i data-lucide="move-up-right" aria-hidden="true"></i>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section alt" id="work">
+          <div class="wrap">
+            <div class="section-head">
+              <div>
+                <span class="kicker">Selected work</span>
+                <h2>Three launches, three different tempos.</h2>
+              </div>
+              <p>
+                The visual language changes by market. The standard stays the same: immediate clarity, premium restraint, and interfaces that feel worth exploring.
+              </p>
+            </div>
+
+            <div class="work-grid">
+              <article class="project large">
+                <div class="project-visual visual-1">
+                  <img src="assets/furniture-launch.jpg" width="1672" height="941" alt="Premium modular sofa launch in a warm private showroom" loading="lazy" decoding="async" />
+                  <span class="tempo-badge">Slow reveal</span>
+                </div>
+                <div class="project-body">
+                  <div>
+                    <span>Furniture launch</span>
+                    <h3>A modular sofa system presented like a private installation.</h3>
+                    <p>
+                      A sculptural homepage, measured product storytelling, and an appointment flow that keeps collectors moving.
+                    </p>
+                  </div>
+                  <button
+                    class="icon-button"
+                    type="button"
+                    aria-label="Open furniture launch details"
+                    data-project-name="Modular Sofa System"
+                    data-project-type="Product collection"
+                    data-project-tone="Quiet luxury"
+                    data-project-notes="A sculptural product launch for a premium modular sofa system with appointment-led conversion."
+                  >
+                    <i data-lucide="arrow-up-right"></i>
+                  </button>
+                  <div class="project-facts" aria-label="Furniture launch details">
+                    <div class="project-fact">
+                      <strong>21 days</strong>
+                      <span>Concept to public release</span>
+                    </div>
+                    <div class="project-fact">
+                      <strong>Private CTA</strong>
+                      <span>Appointment-led conversion</span>
+                    </div>
+                    <div class="project-fact">
+                      <strong>3D mood</strong>
+                      <span>Showroom visual system</span>
+                    </div>
+                  </div>
+                  <div class="project-links">
+                    <a class="case-link" href="work.html#sofa">
+                      Open case study
+                      <i data-lucide="arrow-up-right"></i>
+                    </a>
+                    <a class="case-link" href="index.html?case=sofa#brief">
+                      Start similar launch
+                      <i data-lucide="send"></i>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <div class="project-stack">
+                <article class="project">
+                  <div class="project-visual visual-2">
+                    <img src="assets/gallery-launch.jpg" width="1672" height="941" alt="Private gallery launch with warm lighting and sculptural art" loading="lazy" decoding="async" />
+                    <span class="tempo-badge">Timed release</span>
+                  </div>
+                  <div class="project-body">
+                    <div>
+                      <span>Private gallery</span>
+                      <h3>Quiet provenance, sharper inquiry.</h3>
+                      <p>Artwork releases with collector notes and timed viewing access.</p>
+                    </div>
+                    <button
+                      class="icon-button"
+                      type="button"
+                      aria-label="Open gallery launch details"
+                      data-project-name="Private Gallery Release"
+                      data-project-type="Portfolio release"
+                      data-project-tone="Warm editorial"
+                      data-project-notes="An intimate gallery release with collector notes, timed viewing access, and refined inquiry paths."
+                    >
+                      <i data-lucide="arrow-up-right"></i>
+                    </button>
+                    <div class="project-facts" aria-label="Gallery launch details">
+                      <div class="project-fact">
+                        <strong>72 hrs</strong>
+                        <span>Collector access window</span>
+                      </div>
+                      <div class="project-fact">
+                        <strong>Inquiry</strong>
+                        <span>Artwork request flow</span>
+                      </div>
+                      <div class="project-fact">
+                        <strong>Press kit</strong>
+                        <span>Shareable release assets</span>
+                      </div>
+                    </div>
+                    <div class="project-links">
+                      <a class="case-link" href="work.html#gallery">
+                        Open case study
+                        <i data-lucide="arrow-up-right"></i>
+                      </a>
+                      <a class="case-link" href="index.html?case=gallery#brief">
+                        Start similar launch
+                        <i data-lucide="send"></i>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="project">
+                  <div class="project-visual visual-3">
+                    <img src="assets/wellness-launch.jpg" width="1672" height="941" alt="Wellness hotel suite opening with garden light and calm luxury hospitality" loading="lazy" decoding="async" />
+                    <span class="tempo-badge">Calm conversion</span>
+                  </div>
+                  <div class="project-body">
+                    <div>
+                      <span>Wellness hotel</span>
+                      <h3>A booking path with a calmer pulse.</h3>
+                      <p>Atmospheric suites, seasonal rituals, and clear packages.</p>
+                    </div>
+                    <button
+                      class="icon-button"
+                      type="button"
+                      aria-label="Open hotel launch details"
+                      data-project-name="Wellness Hotel Opening"
+                      data-project-type="Venue opening"
+                      data-project-tone="Bold and cinematic"
+                      data-project-notes="A calm but cinematic venue opening for a wellness hotel with suite storytelling and package clarity."
+                    >
+                      <i data-lucide="arrow-up-right"></i>
+                    </button>
+                    <div class="project-facts" aria-label="Wellness hotel launch details">
+                      <div class="project-fact">
+                        <strong>6 suites</strong>
+                        <span>Story-led room cards</span>
+                      </div>
+                      <div class="project-fact">
+                        <strong>Booking</strong>
+                        <span>Package-first action path</span>
+                      </div>
+                      <div class="project-fact">
+                        <strong>Rituals</strong>
+                        <span>Seasonal content modules</span>
+                      </div>
+                    </div>
+                    <div class="project-links">
+                      <a class="case-link" href="work.html#hotel">
+                        Open case study
+                        <i data-lucide="arrow-up-right"></i>
+                      </a>
+                      <a class="case-link" href="index.html?case=hotel#brief">
+                        Start similar launch
+                        <i data-lucide="send"></i>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="method">
+          <div class="wrap process">
+            <aside class="glass-panel process-aside">
+              <span class="kicker">Method</span>
+              <h2>Designed for the launch week, not the moodboard.</h2>
+              <p>
+                We turn brand intent into a working page system: message hierarchy, interaction rhythm, responsive layouts, accessibility checks, and a clean production handoff.
+              </p>
+            </aside>
+
+            <div class="timeline">
+              <article class="step">
+                <div class="step-index">01</div>
+                <div>
+                  <h3>Frame the moment</h3>
+                  <p>
+                    We define the launch promise, primary conversion path, supporting proof, and the emotional temperature of the first viewport.
+                  </p>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-index">02</div>
+                <div>
+                  <h3>Build the visual system</h3>
+                  <p>
+                    Typography, color, interaction states, and content modules are shaped into a system your team can extend after launch.
+                  </p>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-index">03</div>
+                <div>
+                  <h3>Prototype the scene</h3>
+                  <p>
+                    We create the hero, product moments, and transition behavior early so the page earns attention before the polish pass.
+                  </p>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-index">04</div>
+                <div>
+                  <h3>Ship with control</h3>
+                  <p>
+                    Final QA covers mobile layouts, focus states, motion preferences, contrast, asset weight, and the tiny edge cases that make work feel finished.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section alt" id="notes">
+          <div class="wrap">
+            <div class="notes-panel">
+              <div class="notes-copy">
+                <div>
+                  <span class="kicker">Launch notes</span>
+                  <h2>Stay in the room after the first impression.</h2>
+                  <p>
+                    Monthly teardown notes on launch pages, premium inquiry flows, and the motion details that keep attention useful after the first scroll.
+                  </p>
+                </div>
+                <div>
+                  <form class="subscribe-form" id="subscribe-form" novalidate>
+                    <label class="sr-only" for="subscriber-email">Email address</label>
+                    <input id="subscriber-email" name="subscriber-email" type="email" placeholder="Enter your email" autocomplete="email" required />
+                    <button class="btn btn-primary" type="submit" id="subscribe-button">
+                      Subscribe
+                      <i data-lucide="send"></i>
+                    </button>
+                  </form>
+                  <div class="subscribe-note" id="subscribe-note" role="status" aria-live="polite">
+                    Monthly launch tear-downs, interface notes, and conversion ideas. No spam.
+                  </div>
+                </div>
+              </div>
+              <div class="notes-visual" aria-label="Launch notes preview">
+                <article class="dispatch-card one">
+                  <span>Next dispatch</span>
+                  <h3>How to make an inquiry section feel alive.</h3>
+                  <p>Real action paths, proof details, motion restraint, and a contact fallback clients can trust.</p>
+                </article>
+                <article class="dispatch-card two">
+                  <span>Studio note</span>
+                  <h3>Design is not decoration.</h3>
+                  <p>Every section needs a job: explain, prove, route, capture, or convert.</p>
+                </article>
+                <div class="dispatch-meter" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section alt" id="brief">
+          <div class="wrap brief">
+            <div class="brief-copy">
+              <div>
+                <span class="kicker">Project inquiry</span>
+                <h2>Send the project inquiry. We will shape the room around it.</h2>
+                <p>
+                  Clients can send a launch inquiry directly from this section. The form prepares a clean email with the project details, contact information, timeline, and budget range.
+                </p>
+              </div>
+              <div class="brief-signature" aria-label="Studio highlights">
+                <div class="signature-item">
+                  <strong>12</strong>
+                  <span>launch systems shipped this quarter</span>
+                </div>
+                <div class="signature-item">
+                  <strong>96</strong>
+                  <span>responsive states checked per page</span>
+                </div>
+                <div class="signature-item">
+                  <strong>0</strong>
+                  <span>template themes used as final design</span>
+                </div>
+              </div>
+            </div>
+
+            <form class="glass-panel brief-form" id="brief-form" novalidate>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="client-name">Your name</label>
+                  <input id="client-name" name="client-name" type="text" value="" autocomplete="name" required />
+                </div>
+                <div class="field">
+                  <label for="client-email">Email for reply</label>
+                  <input id="client-email" name="client-email" type="email" value="" autocomplete="email" required />
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="company-name">Company / brand</label>
+                  <input id="company-name" name="company-name" type="text" value="" autocomplete="organization" />
+                </div>
+                <div class="field">
+                  <label for="project-name">Launch name</label>
+                  <input id="project-name" name="project-name" type="text" value="Nord Pavilion" required />
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="launch-type">Launch type</label>
+                  <select id="launch-type" name="launch-type" required>
+                    <option>Product collection</option>
+                    <option>Venue opening</option>
+                    <option>Campaign experience</option>
+                    <option>Portfolio release</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="tone">Tone</label>
+                  <select id="tone" name="tone" required>
+                    <option>Quiet luxury</option>
+                    <option>Technical and precise</option>
+                    <option>Warm editorial</option>
+                    <option>Bold and cinematic</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="timeline">Timeline</label>
+                  <select id="timeline" name="timeline" required>
+                    <option>Two weeks</option>
+                    <option>One month</option>
+                    <option>Six weeks</option>
+                    <option>Exploratory</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="budget">Budget range</label>
+                  <select id="budget" name="budget" required>
+                    <option>$5k-$10k</option>
+                    <option>$10k-$20k</option>
+                    <option>$20k-$40k</option>
+                    <option>$40k+</option>
+                    <option>Not sure yet</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="project-notes">Anchor detail</label>
+                <textarea id="project-notes" name="project-notes" required>A luminous physical launch for a premium interior object with sculptural product photography.</textarea>
+              </div>
+              <div class="summary" id="brief-summary" aria-live="polite"></div>
+              <div class="contact-strip" aria-label="Direct contact details">
+                <div class="contact-card">
+                  <span>Inquiry inbox</span>
+                  <a href="mailto:hello@lumenatelier.studio" id="direct-email">hello@lumenatelier.studio</a>
+                </div>
+                <div class="contact-card">
+                  <span>Response time</span>
+                  <strong>Within 1 business day</strong>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit" id="send-inquiry">
+                  Send inquiry
+                  <i data-lucide="mail"></i>
+                </button>
+                <button class="btn btn-ghost" type="button" id="copy-brief">
+                  Copy inquiry
+                  <i data-lucide="copy"></i>
+                </button>
+                <a class="btn btn-ghost" href="#top" data-scroll>
+                  Back to top
+                  <i data-lucide="arrow-up"></i>
+                </a>
+              </div>
+              <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="wrap">
+          <span>Lumen Atelier, spatial digital launches.</span>
+          <div class="footer-links" aria-label="Footer links">
+            <a href="services.html">Services</a>
+            <a href="work.html">Work</a>
+            <a href="studio.html">Studio</a>
+            <a href="#notes" data-scroll>Notes</a>
+            <a href="#brief" data-scroll>Inquiry</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Inquiry copied.</div>
+
+    <script>
+      const canvas = document.getElementById("hero-scene");
+      const ctx = canvas.getContext("2d");
+      const CONTACT_EMAIL = "hello@lumenatelier.studio";
+      const prefersReducedMotion = false;
+      const magicLayer = document.getElementById("magic-layer");
+      const routeTransition = document.getElementById("route-transition");
+      const routeProgress = document.getElementById("route-progress");
+      let width = 0;
+      let height = 0;
+      let frame = 0;
+      let seed = 0;
+      let sceneAnimationId = null;
+      let activeScrollAnimation = null;
+      let lastTrailAt = 0;
+      let lastSceneDraw = 0;
+      let pendingPointer = null;
+      let pointerTicking = false;
+      let resizeTicking = false;
+      let pointerX = 0.5;
+      let pointerY = 0.5;
+
+      function resizeCanvas() {
+        const ratio = Math.min(window.devicePixelRatio || 1, 1.25);
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = Math.floor(width * ratio);
+        canvas.height = Math.floor(height * ratio);
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
+
+      function drawPanel(x, y, w, h, tilt, hue, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(tilt);
+        const gradient = ctx.createLinearGradient(-w / 2, -h / 2, w / 2, h / 2);
+        gradient.addColorStop(0, `rgba(${hue[0]}, ${hue[1]}, ${hue[2]}, ${alpha})`);
+        gradient.addColorStop(0.48, "rgba(255, 255, 255, 0.055)");
+        gradient.addColorStop(1, "rgba(5, 6, 7, 0.18)");
+        ctx.fillStyle = gradient;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(-w / 2, -h / 2, w, h, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+        for (let i = 1; i < 5; i += 1) {
+          const yy = -h / 2 + (h / 5) * i;
+          ctx.beginPath();
+          ctx.moveTo(-w / 2 + 16, yy);
+          ctx.lineTo(w / 2 - 16, yy);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawScene(now = 0) {
+        const frameInterval = 1000 / 30;
+        if (!prefersReducedMotion && now - lastSceneDraw < frameInterval) {
+          sceneAnimationId = requestAnimationFrame(drawScene);
+          return;
+        }
+        lastSceneDraw = now;
+        sceneAnimationId = null;
+        frame += 0.011;
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "#050607";
+        ctx.fillRect(0, 0, width, height);
+
+        const horizon = height * (0.58 + (pointerY - 0.5) * 0.05);
+        const center = width * (0.58 + (pointerX - 0.5) * 0.04);
+
+        const floorGradient = ctx.createLinearGradient(0, horizon, 0, height);
+        floorGradient.addColorStop(0, "rgba(255, 255, 255, 0.04)");
+        floorGradient.addColorStop(0.72, "rgba(129, 231, 212, 0.08)");
+        floorGradient.addColorStop(1, "rgba(255, 127, 110, 0.05)");
+        ctx.fillStyle = floorGradient;
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+        ctx.lineTo(width, height);
+        ctx.lineTo(width, horizon);
+        ctx.lineTo(0, horizon + 90);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.09)";
+        ctx.lineWidth = 1;
+        for (let i = -8; i <= 8; i += 1) {
+          const start = center + i * 78;
+          ctx.beginPath();
+          ctx.moveTo(start, horizon);
+          ctx.lineTo(center + i * 250, height);
+          ctx.stroke();
+        }
+        for (let j = 0; j < 11; j += 1) {
+          const y = horizon + Math.pow(j / 10, 1.9) * (height - horizon);
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        const drift = Math.sin(frame + seed) * 18;
+        const parallax = (pointerX - 0.5) * 28;
+        drawPanel(width * 0.7 + parallax, height * 0.43 + drift, 240, 350, -0.12, [129, 231, 212], 0.22);
+        drawPanel(width * 0.84 - parallax * 0.4, height * 0.58 - drift * 0.4, 300, 180, 0.09, [244, 201, 93], 0.18);
+        drawPanel(width * 0.55 + Math.cos(frame) * 12, height * 0.62, 360, 210, 0.05, [121, 167, 255], 0.16);
+        drawPanel(width * 0.77 + Math.sin(frame * 0.8) * 14, height * 0.76, 460, 110, -0.04, [255, 127, 110], 0.14);
+
+        const sweep = (Math.sin(frame * 0.7 + seed) + 1) / 2;
+        const sweepX = width * (0.46 + sweep * 0.34);
+        const beam = ctx.createLinearGradient(sweepX - 160, 0, sweepX + 160, height);
+        beam.addColorStop(0, "rgba(255, 255, 255, 0)");
+        beam.addColorStop(0.48, "rgba(255, 255, 255, 0.12)");
+        beam.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = beam;
+        ctx.beginPath();
+        ctx.moveTo(sweepX - 190, 0);
+        ctx.lineTo(sweepX + 60, 0);
+        ctx.lineTo(sweepX + 240, height);
+        ctx.lineTo(sweepX - 120, height);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "rgba(249, 250, 251, 0.72)";
+        for (let i = 0; i < 28; i += 1) {
+          const x = (i * 193 + seed * 41) % width;
+          const y = (i * 97 + seed * 73) % Math.max(height * 0.66, 1);
+          const pulse = 0.7 + Math.sin(frame * 2 + i) * 0.3;
+          ctx.globalAlpha = 0.16 * pulse;
+          ctx.fillRect(x, y, 1.4, 1.4);
+        }
+        ctx.globalAlpha = 1;
+
+        if (!prefersReducedMotion) {
+          startSceneLoop();
+        }
+      }
+
+      function startSceneLoop() {
+        if (sceneAnimationId === null) {
+          sceneAnimationId = requestAnimationFrame(drawScene);
+        }
+      }
+
+      function redrawScene() {
+        if (sceneAnimationId !== null) {
+          cancelAnimationFrame(sceneAnimationId);
+          sceneAnimationId = null;
+        }
+        drawScene();
+      }
+
+      function createSpark(x, y, index) {
+        const spark = document.createElement("span");
+        const colors = ["#81e7d4", "#f4c95d", "#ff7f6e", "#79a7ff", "#f3efe6"];
+        const angle = (Math.PI * 2 * index) / 16 + Math.random() * 0.7;
+        const distance = 32 + Math.random() * 86;
+        spark.className = "spark";
+        spark.style.left = `${x}px`;
+        spark.style.top = `${y}px`;
+        spark.style.setProperty("--spark-size", `${3 + Math.random() * 6}px`);
+        spark.style.setProperty("--spark-color", colors[index % colors.length]);
+        spark.style.setProperty("--spark-x", `${Math.cos(angle) * distance}px`);
+        spark.style.setProperty("--spark-y", `${Math.sin(angle) * distance - 42}px`);
+        magicLayer.appendChild(spark);
+        window.setTimeout(() => spark.remove(), 950);
+      }
+
+      function createCursorTrail(x, y) {
+        return;
+      }
+
+      function magicBurstFromElement(element, count = 16) {
+        if (!element) {
+          return;
+        }
+        element.classList.add("is-casting");
+        window.setTimeout(() => element.classList.remove("is-casting"), 560);
+        const rect = element.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        for (let index = 0; index < count; index += 1) {
+          createSpark(x, y, index);
+        }
+      }
+
+      function easeInOutCubic(value) {
+        return value < 0.5 ? 4 * value * value * value : 1 - Math.pow(-2 * value + 2, 3) / 2;
+      }
+
+      function playRouteTransition() {
+        routeTransition.classList.remove("is-active");
+        void routeTransition.offsetWidth;
+        routeTransition.classList.add("is-active");
+      }
+
+      function markArrival(target) {
+        if (!target || !target.classList.contains("section")) {
+          return;
+        }
+        target.classList.remove("is-arriving");
+        void target.offsetWidth;
+        target.classList.add("is-arriving");
+        window.setTimeout(() => target.classList.remove("is-arriving"), 820);
+      }
+
+      function animateScrollTo(top, target, done) {
+        if (activeScrollAnimation !== null) {
+          cancelAnimationFrame(activeScrollAnimation);
+          activeScrollAnimation = null;
+        }
+        const start = window.scrollY;
+        const distance = top - start;
+        const duration = prefersReducedMotion ? 0 : Math.min(1050, Math.max(420, Math.abs(distance) * 0.36));
+        const startedAt = performance.now();
+        document.body.classList.add("is-traveling");
+        routeProgress.classList.add("is-active");
+        routeProgress.style.transform = "scaleX(0)";
+        if (!prefersReducedMotion) {
+          playRouteTransition();
+        }
+
+        function step(now) {
+          if (duration === 0) {
+            window.scrollTo(0, top);
+            rawDone();
+            return;
+          }
+          const raw = Math.min(1, (now - startedAt) / duration);
+          const eased = easeInOutCubic(raw);
+          window.scrollTo(0, Math.round(start + distance * eased));
+          routeProgress.style.transform = `scaleX(${Math.max(0.04, eased)})`;
+          if (raw < 1) {
+            activeScrollAnimation = requestAnimationFrame(step);
+            return;
+          }
+          rawDone();
+        }
+
+        function rawDone() {
+          activeScrollAnimation = null;
+          routeProgress.style.transform = "scaleX(1)";
+          window.setTimeout(() => {
+            routeProgress.classList.remove("is-active");
+            routeProgress.style.transform = "scaleX(0)";
+          }, 180);
+          document.body.classList.remove("is-traveling");
+          markArrival(target);
+          done?.();
+        }
+
+        activeScrollAnimation = requestAnimationFrame(step);
+      }
+
+      function navOffset() {
+        const nav = document.querySelector(".nav");
+        return nav ? Math.ceil(nav.getBoundingClientRect().height + 18) : 0;
+      }
+
+      function targetTopForHash(hash) {
+        const target = document.querySelector(hash);
+        if (!target) {
+          return null;
+        }
+        return hash === "#top" ? 0 : Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY - navOffset()));
+      }
+
+      function scrollToSection(hash, updateHash = true) {
+        const target = document.querySelector(hash);
+        if (!target) {
+          return false;
+        }
+        const top = targetTopForHash(hash);
+        animateScrollTo(top, target, () => {
+          if (updateHash) {
+            history.pushState(null, "", hash);
+          }
+          updateActiveSection();
+        });
+        return true;
+      }
+
+      function alignHashToNav() {
+        const hash = window.location.hash;
+        if (!hash) {
+          return;
+        }
+        const top = targetTopForHash(hash);
+        if (top === null) {
+          return;
+        }
+        window.scrollTo(0, top);
+        updateActiveSection();
+      }
+
+      const menuToggle = document.getElementById("nav-menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      function setMobileMenu(open) {
+        if (!menuToggle || !mobileMenu) {
+          return;
+        }
+        menuToggle.setAttribute("aria-expanded", String(open));
+        menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        mobileMenu.classList.toggle("is-open", open);
+      }
+
+      function setSelectByText(id, text) {
+        const select = document.getElementById(id);
+        const option = [...select.options].find((item) => item.textContent === text);
+        if (option) {
+          select.value = option.value;
+        }
+      }
+
+      const launchPresets = {
+        sofa: {
+          name: "Modular Sofa System",
+          type: "Product collection",
+          tone: "Quiet luxury",
+          notes: "A sculptural product launch for a premium modular sofa system with appointment-led conversion."
+        },
+        gallery: {
+          name: "Private Gallery Release",
+          type: "Portfolio release",
+          tone: "Warm editorial",
+          notes: "An intimate gallery release with collector notes, timed viewing access, and refined inquiry paths."
+        },
+        hotel: {
+          name: "Wellness Hotel Opening",
+          type: "Venue opening",
+          tone: "Bold and cinematic",
+          notes: "A calm but cinematic venue opening for a wellness hotel with suite storytelling and package clarity."
+        },
+        product: {
+          name: "Product Launch System",
+          type: "Product collection",
+          tone: "Technical and precise",
+          notes: "A product launch with a cinematic first viewport, clear proof modules, and a focused sales handoff."
+        },
+        venue: {
+          name: "Venue Opening System",
+          type: "Venue opening",
+          tone: "Warm editorial",
+          notes: "A venue launch with atmosphere, booking clarity, press-ready details, and an inquiry path."
+        },
+        campaign: {
+          name: "Campaign Experience",
+          type: "Campaign experience",
+          tone: "Bold and cinematic",
+          notes: "A time-boxed campaign room with launch countdowns, editorial content, and conversion moments."
+        }
+      };
+
+      function applyLaunchPreset(key) {
+        const preset = launchPresets[key];
+        if (!preset) {
+          return false;
+        }
+        document.getElementById("project-name").value = preset.name;
+        setSelectByText("launch-type", preset.type);
+        setSelectByText("tone", preset.tone);
+        document.getElementById("project-notes").value = preset.notes;
+        updateSummary();
+        return true;
+      }
+
+      function valueOf(id, fallback = "") {
+        return document.getElementById(id)?.value.trim() || fallback;
+      }
+
+      function buildInquiryText() {
+        const clientName = valueOf("client-name", "Not provided");
+        const clientEmail = valueOf("client-email", "Not provided");
+        const company = valueOf("company-name", "Not provided");
+        const launchName = valueOf("project-name", "Untitled launch");
+        const type = document.getElementById("launch-type").value;
+        const tone = document.getElementById("tone").value;
+        const timeline = document.getElementById("timeline").value;
+        const budget = document.getElementById("budget").value;
+        const notes = valueOf("project-notes", "No anchor detail added.");
+        return [
+          `New project inquiry for ${launchName}`,
+          "",
+          `Client: ${clientName}`,
+          `Email: ${clientEmail}`,
+          `Company / brand: ${company}`,
+          "",
+          `Launch type: ${type}`,
+          `Tone: ${tone}`,
+          `Timeline: ${timeline}`,
+          `Budget range: ${budget}`,
+          "",
+          "Anchor detail:",
+          notes
+        ].join("\n");
+      }
+
+      function updateSummary() {
+        const client = document.getElementById("client-name").value.trim();
+        const name = document.getElementById("project-name").value.trim() || "Untitled launch";
+        const type = document.getElementById("launch-type").value;
+        const tone = document.getElementById("tone").value;
+        const timeline = document.getElementById("timeline").value;
+        const budget = document.getElementById("budget").value;
+        const notes = document.getElementById("project-notes").value.trim() || "No anchor detail added.";
+        document.getElementById("brief-summary").textContent =
+          `${client ? `${client} is asking about ` : ""}${name}: ${type} with a ${tone.toLowerCase()} tone, shaped for ${timeline.toLowerCase()} with ${budget.toLowerCase()} budget range. Anchor detail: ${notes}`;
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("visible");
+        window.setTimeout(() => toast.classList.remove("visible"), 2200);
+      }
+
+      function setFormStatus(message, isError = false) {
+        const status = document.getElementById("form-status");
+        status.textContent = message;
+        status.style.color = isError ? "var(--coral)" : "var(--mint)";
+      }
+
+      function validateInquiry() {
+        const requiredIds = ["client-name", "client-email", "project-name", "project-notes"];
+        const missing = requiredIds.find((id) => !document.getElementById(id).value.trim());
+        if (missing) {
+          document.getElementById(missing).focus();
+          setFormStatus("Please fill the required contact and project fields.", true);
+          return false;
+        }
+        const email = document.getElementById("client-email");
+        if (!email.checkValidity()) {
+          email.focus();
+          setFormStatus("Please enter a valid email so we can reply.", true);
+          return false;
+        }
+        return true;
+      }
+
+      document.querySelectorAll("[data-scroll]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const hash = link.getAttribute("href");
+          if (!hash || !hash.startsWith("#")) {
+            return;
+          }
+          event.preventDefault();
+          setMobileMenu(false);
+          magicBurstFromElement(link, 10);
+          scrollToSection(hash);
+        });
+      });
+
+      menuToggle?.addEventListener("click", () => {
+        const open = !mobileMenu?.classList.contains("is-open");
+        setMobileMenu(open);
+        magicBurstFromElement(menuToggle, open ? 12 : 6);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setMobileMenu(false);
+        }
+      });
+
+      document.getElementById("reframe-scene").addEventListener("click", () => {
+        seed += 1;
+        document.querySelector(".demo-panel")?.classList.add("is-reframing");
+        window.setTimeout(() => document.querySelector(".demo-panel")?.classList.remove("is-reframing"), 620);
+        magicBurstFromElement(document.getElementById("reframe-scene"), 20);
+        redrawScene();
+        showToast("Scene reframed.");
+      });
+
+      document.getElementById("brief-form").addEventListener("input", updateSummary);
+
+      document.getElementById("brief-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        updateSummary();
+        if (!validateInquiry()) {
+          magicBurstFromElement(document.getElementById("send-inquiry"), 8);
+          return;
+        }
+        const subject = encodeURIComponent(`Project inquiry: ${valueOf("project-name", "New launch")}`);
+        const body = encodeURIComponent(buildInquiryText());
+        const mailto = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        document.getElementById("direct-email").href = mailto;
+        magicBurstFromElement(document.getElementById("send-inquiry"), 18);
+        setFormStatus("Opening your email app with the project inquiry prepared.");
+        showToast("Inquiry email prepared.");
+        window.location.href = mailto;
+      });
+
+      document.getElementById("copy-brief").addEventListener("click", async () => {
+        updateSummary();
+        const text = buildInquiryText();
+        magicBurstFromElement(document.getElementById("copy-brief"), 14);
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Inquiry copied.");
+        } catch {
+          showToast("Inquiry ready to select.");
+        }
+      });
+
+      document.getElementById("subscribe-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = document.getElementById("subscriber-email");
+        const note = document.getElementById("subscribe-note");
+        if (!email.value.trim() || !email.checkValidity()) {
+          email.focus();
+          note.textContent = "Enter a valid email to subscribe to launch notes.";
+          note.style.color = "var(--coral)";
+          magicBurstFromElement(document.getElementById("subscribe-button"), 8);
+          return;
+        }
+        const subject = encodeURIComponent("Subscribe to Lumen launch notes");
+        const body = encodeURIComponent(`Please add ${email.value.trim()} to Lumen Atelier launch notes.`);
+        const mailto = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        note.textContent = "Opening your email app with the subscription request prepared.";
+        note.style.color = "var(--mint)";
+        magicBurstFromElement(document.getElementById("subscribe-button"), 16);
+        showToast("Subscription email prepared.");
+        window.location.href = mailto;
+      });
+
+      document.querySelectorAll(".project .icon-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".project").forEach((project) => project.classList.remove("is-selected"));
+          button.closest(".project")?.classList.add("is-selected");
+          document.getElementById("project-name").value = button.dataset.projectName || "Lumen launch";
+          setSelectByText("launch-type", button.dataset.projectType || "Product collection");
+          setSelectByText("tone", button.dataset.projectTone || "Quiet luxury");
+          document.getElementById("project-notes").value = button.dataset.projectNotes || "";
+          updateSummary();
+          magicBurstFromElement(button, 14);
+          scrollToSection("#brief");
+          showToast("Project inquiry loaded.");
+        });
+      });
+
+      const presetFromUrl = new URLSearchParams(window.location.search).get("case") || new URLSearchParams(window.location.search).get("service");
+      if (presetFromUrl && applyLaunchPreset(presetFromUrl)) {
+        document.querySelector(`[data-project-name="${document.getElementById("project-name").value}"]`)?.closest(".project")?.classList.add("is-selected");
+      }
+
+      const revealTargets = [
+        ".section-head",
+        ".service",
+        ".project",
+        ".process-aside",
+        ".step",
+        ".notes-panel",
+        ".brief-copy",
+        ".brief-form"
+      ];
+
+      document.querySelectorAll(revealTargets.join(",")).forEach((element, index) => {
+        element.classList.add("reveal");
+        element.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
+      });
+
+      if ("IntersectionObserver" in window && !prefersReducedMotion) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px", threshold: 0.16 }
+        );
+        document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+      } else {
+        document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+      }
+
+      document.querySelectorAll(".reveal").forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          element.classList.add("is-visible");
+        }
+      });
+
+      const sectionLinks = [...document.querySelectorAll(".nav-links a[data-scroll]")];
+      const sectionTargets = sectionLinks
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+      function updateActiveSection() {
+        document.body.classList.toggle("has-scrolled", window.scrollY > 18);
+        const activationLine = navOffset() + 80;
+        const current = sectionTargets.reduce((best, section) => {
+          const top = section.getBoundingClientRect().top;
+          return top <= activationLine ? { id: section.id } : best;
+        }, { id: "" });
+        sectionLinks.forEach((link) => {
+          link.classList.toggle("is-active", link.getAttribute("href") === `#${current.id}`);
+        });
+      }
+
+      window.addEventListener("resize", () => {
+        if (resizeTicking) {
+          return;
+        }
+        resizeTicking = true;
+        window.requestAnimationFrame(() => {
+          resizeCanvas();
+          redrawScene();
+          if (window.innerWidth > 640) {
+            setMobileMenu(false);
+          }
+          resizeTicking = false;
+        });
+      });
+
+      function applyPointerMove() {
+        if (!pendingPointer) {
+          pointerTicking = false;
+          return;
+        }
+        const { x, y } = pendingPointer;
+        pointerX = x / Math.max(window.innerWidth, 1);
+        pointerY = y / Math.max(window.innerHeight, 1);
+        document.body.style.setProperty("--cursor-x", `${x}px`);
+        document.body.style.setProperty("--cursor-y", `${y}px`);
+        pointerTicking = false;
+      }
+
+      window.addEventListener("pointermove", (event) => {
+        pendingPointer = { x: event.clientX, y: event.clientY };
+        if (!pointerTicking) {
+          pointerTicking = true;
+          window.requestAnimationFrame(applyPointerMove);
+        }
+      }, { passive: true });
+
+      window.addEventListener("scroll", updateActiveSection, { passive: true });
+      window.addEventListener("hashchange", () => {
+        if (window.location.hash) {
+          scrollToSection(window.location.hash, false);
+        }
+      });
+
+      resizeCanvas();
+      updateSummary();
+      updateActiveSection();
+      redrawScene();
+
+      window.addEventListener("load", () => {
+        if (window.lucide) {
+          window.lucide.createIcons({
+            attrs: {
+              "stroke-width": 1.8
+            }
+          });
+        }
+        window.requestAnimationFrame(alignHashToNav);
+      });
+    </script>
+    <script src="assets/site-motion.js"></script>
+  </body>
+</html>
